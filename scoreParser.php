@@ -19,7 +19,16 @@ class scoreswayTableParser extends Parser{
 		
 	public function parse($definition){
 		
+		try{
 		$html = file_get_html($this->url,false,proxyList::getContext());
+		}
+		catch (Exception $e){
+		
+		}
+		
+		if (!$html){
+			return false;
+		}
 		
 		$teams = Array();
 		
@@ -42,8 +51,18 @@ class scoreswayTableParser extends Parser{
 class scoreswayScheduleParser extends Parser{
 
 	public function parse($definition){
+		
+		try{
 		$html = file_get_html($this->url);
-
+		}	
+		catch (Exception $e){
+			
+		}
+		
+		if (!$html){
+			return false;
+		}
+		
 		$teams = Array();
 
 		$trs = $html->find('tr');
@@ -90,7 +109,14 @@ class footballTableParser extends scoreswayTableParser{
 	}
 	
 	public function parse(){
+		
 		$result = parent::parse($this->layoutDefinition);
+		
+		//if no result probably proxy is down, try again (with different proxy)
+		if (!$result){
+			Proxylist::notifyBrokenProxy();
+			return $this->parse();
+		}
 		
 		//remove first row. it doesnt contain info
 		array_shift($result);
@@ -116,6 +142,12 @@ class footballScheduleParser extends scoreswayScheduleParser{
 	
 	public function parse(){
 		$result = parent::parse($this->layoutDefinition);
+
+		//if no result probably proxy is down, try again (with different proxy)
+		if (!$result){
+			return $this->parse();
+		}
+		
 		
 		//remove first row. it doesnt contain info
 		array_shift($result);

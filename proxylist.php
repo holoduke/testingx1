@@ -2,11 +2,12 @@
 
 //echo base64_decode("NjguMTgwLjE5NS4xMzg=");
 //die;
-
+ini_set('default_socket_timeout',    10);
 class proxyList{
 
 	public static $proxies = Array();
-
+	public static $activeProxy = null;
+	
 	public static function addProxy($ip){
 		proxyList::$proxies[] = $ip;
 	}
@@ -23,6 +24,15 @@ class proxyList{
 		file_put_contents("proxylist.json",JSON_encode(proxyList::$proxies));
 	}
 	
+	//removes current proxy
+	public static function notifyBrokenProxy(){
+		$key = array_search(proxyList::$activeProxy,proxyList::$proxies);
+		echo "broken proxy detected remove ".proxyList::$proxies[$key]."\n";
+		//unset(proxyList::$proxies[$key]);
+		proxyList::$proxies = array_diff(proxyList::$proxies, array($proxies[$key]));
+		proxyList::storeToFile();
+	}
+	
 	public static function restoreFromFile(){
 		$content = file_get_contents("proxylist.json");
 		
@@ -34,10 +44,56 @@ class proxyList{
 	}
 	
 	public static function getContext(){
+		
+		proxyList::$activeProxy = proxyList::getRandomProxy();
+		
+		if (!proxyList::$activeProxy){
+
+			proxyList::fetchProxies();
+			proxyList::storeToFile();
+			proxyList::$activeProxy = proxyList::getRandomProxy();
+		}
+		
+		
+		if (!proxyList::$activeProxy){
+			$opts = array(
+					'http'=>array(
+							'method'=>"GET",
+							'header'=>"Accept-language: en\r\n" .
+							"Cookie: foo=bar\r\n",
+							"referer" => "https://www.google.nl/",
+							'pragma' => "no-cache",
+							'user_agent'=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.95 Safari/537.36"
+			
+					)
+			);			
+		}
+		else{
+			$opts = array(
+					'http'=>array(
+							'method'=>"GET",
+							'proxy' => proxyList::$activeProxy,
+							'header'=>"Accept-language: en\r\n" .
+							"Cookie: foo=bar\r\n",
+							"referer" => "https://www.google.nl/",
+							'pragma' => "no-cache",
+							'user_agent'=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.95 Safari/537.36"
+			
+					)
+			);
+		}
+
+		
+		$context = stream_context_create($opts);
+
+		return $context;
+	}
+	
+	public static function fetchProxies(){
+
 		$opts = array(
 				'http'=>array(
 						'method'=>"GET",
-						'proxy' => proxyList::getRandomProxy(),
 						'header'=>"Accept-language: en\r\n" .
 						"Cookie: foo=bar\r\n",
 						"referer" => "https://www.google.nl/",
@@ -48,17 +104,11 @@ class proxyList{
 		);
 		
 		$context = stream_context_create($opts);
-
-		return $context;
-	}
-	
-	public static function fetchProxies(){
-
 		$url = "http://www.cool-proxy.net/proxies/http_proxy_list/country_code:/port:80/anonymous:/sort:score/direction:desc";
 				
 		echo "going to fetch proxies from ".$url."\n\n";
 		
-		$html = file_get_html($url,false,proxyList::getContext());
+		$html = file_get_html($url,false,$context);
 		$trs = $html->find('table tr');
 		
 		//print_r($html->outertext);
@@ -91,4 +141,3 @@ class proxyList{
 //proxyList::fetchProxies();
 //proxyList::storeToFile();
 proxyList::restoreFromFile();
-proxyList::getRandomProxy();

@@ -28,7 +28,9 @@ echo $result;
 
 $dir = 'schedule/';
 
-$result = $source1->find('table table table tr');
+$result = $source1->find('table table table');
+
+
 $i = 0;
 foreach (new DirectoryIterator($dir) as $fileInfo) {
     if($fileInfo->isDot()) continue;
@@ -52,107 +54,113 @@ foreach (new DirectoryIterator($dir) as $fileInfo) {
 
     	
     	
-    	echo $object->home."  ".$object->away."\n";
-    	//loop through html
-    	foreach($result as $tr){
-    	
+    	foreach ($result as $table){
     		
+
+    		$tableResult = $table->find('tr');
     		
-    		foreach ($tr->find('td') as $td){
-    	
-    			$p = $td->find('p');
-    			$b = $td->find('b');
-    			//print_r($p[0]->plaintext)."\n";
-    			//print_r($p[1]->plaintext);
-    			//echo $td->plaintext;
-    			$image = $td->find('img');
-    			$image = $image[0]->src;
-    	
-    			$pos = strripos(trim($p[0]->plaintext), trim($object->home));
-    			if ($pos === false){
-    				$pos = strripos(trim($p[1]->plaintext), trim($object->home));
-    			}
-    			if ($pos === false){
-    				$pos = strripos(trim($b[0]->plaintext), trim($object->home));
-    			}
-    			
-    			if ($pos !== false)
-    			{
-    			echo "found found found\n";
-    			echo "saarch for ".$object->away." or ".$object->home."\n";
-    			echo "text 1".$p[0]->plaintext."\n";
-    			echo "text 2".$p[1]->plaintext."\n";
-    			echo "text 3".$b[0]->plaintext."\n";
-    			echo "image ".$image;
-    			
-    			echo "[".strripos($image,'http')."]!";
-    			if (strripos($image,'http') !== false){
-    				echo "regular";
-    				$file = file_get_contents($image);
-    			}
-    			else{
-    				$file = file_get_contents($baseUrl.$image);
-    			}
-    			
-    			$file = file_get_contents($baseUrl.$image);
-    			$src = imagecreatefromstring($file);
-    			$width = imagesx($src);
-    			$height = imagesy($src);
-    			
-    			$img = imagecreatetruecolor(64,64);
-    			imagecopyresized($img,$src,0,0,0,0,64,64,$width,$height);
-    			
-    			mkdir( "images/".$leaguedir."/");
-    			imagejpeg($img, "images/".$leaguedir."/".trim($object->home).".png");
-    			//file_put_contents("images/".$object->home."jpg","test");
-    			echo "\n------------------------\n\n\n";
-    			}
-    			
-    			
-
-    			$image = $td->find('img');
-    			$image = $image[0]->src;
-    			
-    			$pos = strripos(trim($p[0]->plaintext), trim($object->away));
-    			if ($pos === false){
-    				$pos = strripos(trim($p[1]->plaintext), trim($object->away));
-    			}
-    			if ($pos === false){
-    				$pos = strripos(trim($b[0]->plaintext), trim($object->away));
-    			}
-    			
-    			if ($pos !== false)
-    			{
-    				echo "found found found\n";
-    				echo "saarch for ".$object->away." or ".$object->home."\n";
-    				echo "text 1".$p[0]->plaintext."\n";
-    				echo "text 2".$p[1]->plaintext."\n";
-    				echo "text 3".$b[0]->plaintext."\n";
-    				echo "image ".$image;
-
-    				echo "[".strripos($image,'http')."]!";
-    				if (strripos($image,'http') !== false){
-    					echo "regular";
-    					$file = file_get_contents($image);
-    				}
-    				else{
-    					$file = file_get_contents($baseUrl.$image);
-    				}
-    				$src = imagecreatefromstring($file);
-    				$width = imagesx($src);
-    				$height = imagesy($src);
-    					
-    				$img = imagecreatetruecolor(64,64);
-    				imagecopyresized($img,$src,0,0,0,0,64,64,$width,$height);
-    				mkdir( "images/".$leaguedir."/");
-    				imagejpeg($img, "images/".$leaguedir."/".trim($object->away).".png");
-    				//file_put_contents("images/".$object->home."jpg","test");
-    				echo "\n------------------------\n\n\n";
-    			}
-    			
-    			usleep(100);
-    			//echo $tr->outertext;
-    		}
+	    	echo $object->home."  ".$object->away."\n";
+	    	//loop through html
+	    	foreach($tableResult as $tr){
+	    	
+	    		
+	    		
+	    		foreach ($tr->find('td') as $td){
+	    	
+	    			$p = $td->find('p');
+	    			$b = $td->find('b');
+	    			//print_r($p[0]->plaintext)."\n";
+	    			//print_r($p[1]->plaintext);
+	    			//echo $td->plaintext;
+	    			$image = $td->find('img');
+	    			$image = $image[0]->src;
+	    	
+	    			$pos = strripos(trim($p[0]->plaintext), trim($object->home));
+	    			if ($pos === false){
+	    				$pos = strripos(trim($p[1]->plaintext), trim($object->home));
+	    			}
+	    			if ($pos === false){
+	    				$pos = strripos(trim($b[0]->plaintext), trim($object->home));
+	    			}
+	    			
+	    			if ($pos !== false)
+	    			{
+	    			echo "found found found\n";
+	    			echo "saarch for ".$object->away." or ".$object->home."\n";
+	    			echo "text 1".$p[0]->plaintext."\n";
+	    			echo "text 2".$p[1]->plaintext."\n";
+	    			echo "text 3".$b[0]->plaintext."\n";
+	    			echo "image ".$image;
+	    			
+	    			echo "[".strripos($image,'http')."]!";
+	    			if (strripos($image,'http') !== false){
+	    				echo "regular";
+	    				$file = file_get_contents($image);
+	    			}
+	    			else{
+	    				$file = file_get_contents($baseUrl.$image);
+	    			}
+	    			
+	    			$file = file_get_contents($baseUrl.$image);
+	    			$src = imagecreatefromstring($file);
+	    			$width = imagesx($src);
+	    			$height = imagesy($src);
+	    			
+	    			$img = imagecreatetruecolor(64,64);
+	    			imagecopyresized($img,$src,0,0,0,0,64,64,$width,$height);
+	    			
+	    			mkdir( "images/".$leaguedir."/");
+	    			imagejpeg($img, "images/".$leaguedir."/".trim($object->home).".png");
+	    			//file_put_contents("images/".$object->home."jpg","test");
+	    			echo "\n------------------------\n\n\n";
+	    			}
+	    			
+	    			
+	
+	    			$image = $td->find('img');
+	    			$image = $image[0]->src;
+	    			
+	    			$pos = strripos(trim($p[0]->plaintext), trim($object->away));
+	    			if ($pos === false){
+	    				$pos = strripos(trim($p[1]->plaintext), trim($object->away));
+	    			}
+	    			if ($pos === false){
+	    				$pos = strripos(trim($b[0]->plaintext), trim($object->away));
+	    			}
+	    			
+	    			if ($pos !== false)
+	    			{
+	    				echo "found found found\n";
+	    				echo "saarch for ".$object->away." or ".$object->home."\n";
+	    				echo "text 1".$p[0]->plaintext."\n";
+	    				echo "text 2".$p[1]->plaintext."\n";
+	    				echo "text 3".$b[0]->plaintext."\n";
+	    				echo "image ".$image;
+	
+	    				echo "[".strripos($image,'http')."]!";
+	    				if (strripos($image,'http') !== false){
+	    					echo "regular";
+	    					$file = file_get_contents($image);
+	    				}
+	    				else{
+	    					$file = file_get_contents($baseUrl.$image);
+	    				}
+	    				$src = imagecreatefromstring($file);
+	    				$width = imagesx($src);
+	    				$height = imagesy($src);
+	    					
+	    				$img = imagecreatetruecolor(128,128);
+	    				imagecopyresized($img,$src,0,0,0,0,128,128,$width,$height);
+	    				mkdir( "images/".$leaguedir."/");
+	    				imagejpeg($img, str_replace(' ', '_',"images/".$leaguedir."/".trim($object->away).".png"));
+	    				//file_put_contents("images/".$object->home."jpg","test");
+	    				echo "\n------------------------\n\n\n";
+	    			}
+	    			
+	    			usleep(100);
+	    			//echo $tr->outertext;
+	    		}
+	    	}
     	}
    
     }

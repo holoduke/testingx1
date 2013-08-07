@@ -24,22 +24,22 @@ $config = array(
 						array("Italy" =>
 								array("leagues" =>
 										array(
-												"Serie A" => array(
-														"years" => array(
-																"2013" =>getScoreWayTableLink(18219)
-														)
-														,"defaultYear" => $defaultYear
-														,"schedule" => getScoreWayScheduleLink(21388)
-												),
+// 												"Serie A" => array(
+// 														"years" => array(
+// 																"2013" =>getScoreWayTableLink(18219)
+// 														)
+// 														,"defaultYear" => $defaultYear
+// 														,"schedule" => getScoreWayScheduleLink(21388)
+// 												),
 
-												"Serie B" => array(
-														"years" => array(
-																"2013" => getScoreWayTableLink(18411)
+// 												"Serie B" => array(
+// 														"years" => array(
+// 																"2013" => getScoreWayTableLink(18411)
 																
-														)
-														,"defaultYear" => $defaultYear
-														,"schedule" => getScoreWayScheduleLink(18411)
-												)
+// 														)
+// 														,"defaultYear" => $defaultYear
+// 														,"schedule" => getScoreWayScheduleLink(18411)
+// 												)
 										)
 								),
 								"Netherlands" =>
@@ -77,7 +77,55 @@ $config = array(
 														)
 														,"defaultYear" => $defaultYear
 														,"schedule" => getScoreWayScheduleLink(21768)
-												)
+												),
+												"Hoofd Klasse zaterdag A" => array(
+														"years" => array(
+																"2013" => getScoreWayTableLink(21889)
+												
+														)
+														,"defaultYear" => $defaultYear
+														,"schedule" => getScoreWayScheduleLink(21889)
+												),
+												"Hoofd Klasse zaterdag B" => array(
+														"years" => array(
+																"2013" => getScoreWayTableLink(21890)
+												
+														)
+														,"defaultYear" => $defaultYear
+														,"schedule" => getScoreWayScheduleLink(21890)
+												),
+												"Hoofd Klasse zaterdag C" => array(
+														"years" => array(
+																"2013" => getScoreWayTableLink(21891)
+												
+														)
+														,"defaultYear" => $defaultYear
+														,"schedule" => getScoreWayScheduleLink(21891)
+												),
+												"Hoofd Klasse zondag A" => array(
+														"years" => array(
+																"2013" => getScoreWayTableLink(21892)
+												
+														)
+														,"defaultYear" => $defaultYear
+														,"schedule" => getScoreWayScheduleLink(21892)
+												),
+												"Hoofd Klasse zondag B" => array(
+														"years" => array(
+																"2013" => getScoreWayTableLink(21893)
+												
+														)
+														,"defaultYear" => $defaultYear
+														,"schedule" => getScoreWayScheduleLink(21893)
+												),
+												"Hoofd Klasse zondag C" => array(
+														"years" => array(
+																"2013" => getScoreWayTableLink(21894)
+												
+														)
+														,"defaultYear" => $defaultYear
+														,"schedule" => getScoreWayScheduleLink(21894)
+												),
 										)
 								)
 						)

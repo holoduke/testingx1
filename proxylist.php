@@ -43,7 +43,7 @@ class proxyList{
 		return true;
 	}
 	
-	public static function getContext(){
+	public static function getContext($agent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.95 Safari/537.36"){
 		
 		proxyList::$activeProxy = proxyList::getRandomProxy();
 		
@@ -54,7 +54,6 @@ class proxyList{
 			proxyList::$activeProxy = proxyList::getRandomProxy();
 		}
 		
-		
 		if (!proxyList::$activeProxy){
 			$opts = array(
 					'http'=>array(
@@ -63,7 +62,7 @@ class proxyList{
 							"Cookie: foo=bar\r\n",
 							"referer" => "https://www.google.nl/",
 							'pragma' => "no-cache",
-							'user_agent'=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.95 Safari/537.36"
+							'user_agent'=>$agent
 			
 					)
 			);			
